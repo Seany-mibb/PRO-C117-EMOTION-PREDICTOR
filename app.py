@@ -12,16 +12,15 @@ def home():
     return render_template('index.html')
 
 # write a route for post request
-@app.route('/review' , methods = ['POST'])
-def review():
+@app.route('/predict' , methods = ['POST'])
+def predict():
 
     # extract the customer_review by writing the appropriate 'key' from the JSON data
-    review = request.json.get('')
+    review = request.json.get('customer_review')
 
     # check if the customer_review is empty, return error
     if not review:
-
-        return jsonify({'status' : 'error' , 
+        return jsonify({'status' : 'Error' , 
                         'message' : 'Empty response'})
 
     # if review is not empty, pass it through the 'predict' function.
@@ -30,9 +29,9 @@ def review():
 
     else:
 
-        _ , _ = sa.predict(review)
+        sentiment, emoji = sa.predict(review)
 
-        return jsonify({'':'' , '':''})
+        return jsonify({'status':'Success' , 'prediction':sentiment, 'url':emoji})
 
 
 if __name__  ==  "__main__":
